@@ -13,6 +13,7 @@ public class PortalParameter : MonoBehaviour {
         isCreated = true;
         isTriggered = false;
         GetComponent<MeshRenderer>().enabled = false;
+        GetComponent<SphereCollider>().enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -24,10 +25,12 @@ public class PortalParameter : MonoBehaviour {
         if (isTriggered == true && isCreated == true)
         {
             GetComponent<MeshRenderer>().enabled = true;
+            GetComponent<SphereCollider>().enabled = true;
         }
         if (isTriggered == false || isCreated == false)
         {
             GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<SphereCollider>().enabled = false;
         }
 
     }

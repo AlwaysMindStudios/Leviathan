@@ -6,6 +6,7 @@ public class PlayerParameter : MonoBehaviour {
 
     public bool isTeleport;
     public bool isTrigger;
+    public bool isLanded;
     public GameObject teleport;
     public GameObject InputController;
     bool inverseGravity;
@@ -15,6 +16,7 @@ public class PlayerParameter : MonoBehaviour {
     void Start () {
         isTeleport = false;
         isTrigger = false;
+        isLanded = false;
         inverseGravity = false;
         gravitySign = -1.0f;
 	}
@@ -31,8 +33,9 @@ public class PlayerParameter : MonoBehaviour {
         }
         
         inverseGravity = InputController.GetComponent<InputManager>().inverseGravity;
-        if (inverseGravity == true)
+        if (inverseGravity == true && isLanded == true)
         {
+            isLanded = false;
             inverseGravity = false;
             ReverseGravity();
         }
@@ -47,4 +50,13 @@ public class PlayerParameter : MonoBehaviour {
         else
             transform.rotation = Quaternion.Euler(180, 180, 0);
     }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if(col.gameObject.tag == "floor")
+        {
+            isLanded = true;
+        }
+    }
+
 }

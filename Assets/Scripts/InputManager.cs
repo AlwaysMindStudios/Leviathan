@@ -8,15 +8,30 @@ public class InputManager : MonoBehaviour {
     public bool readyTeleport;
     public bool inverseGravity;
 
+    GameObject grabbedObject;
+    bool grabbing;
+
     // Use this for initialization
     void Start() {
         showPortals = false;
         readyTeleport = false;
+        grabbing = false;
 
+    }
+
+    void GrabObject()
+    {
+        grabbing = true;
+    }
+
+    void DropObject()
+    {
+        grabbing = false;
     }
 
     // Update is called once per frame
     void Update() {
+
         OVRInput.Update(); // need to be called for checks below to work
 
         // If A or X button is pressed from Touch, showPortals is true, else is false
@@ -39,8 +54,27 @@ public class InputManager : MonoBehaviour {
             readyTeleport = false;
         }
 
+        // If Left hand trigger and index trigger are pressed together, grab object, else drop
+        if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger) && OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
+        {
+            GrabObject();
+        }
+        else
+        {
+            DropObject();
+        }
+
+        // If Right hand trigger and index trigger are pressed together, grab object, else drop
+        if (OVRInput.Get(OVRInput.Button.SecondaryHandTrigger) && OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
+        {
+            GrabObject();
+        }
+        else
+        {
+            DropObject();
+        }
         // If B or Y button is pressed from Touch, inverse Gravity
-        if (OVRInput.GetDown(OVRInput.Button.Two) || OVRInput.Get(OVRInput.Button.Four))
+        if (OVRInput.Get(OVRInput.Button.Two) || OVRInput.Get(OVRInput.Button.Four))
         {
             inverseGravity = true;
         }
@@ -51,10 +85,6 @@ public class InputManager : MonoBehaviour {
 
 
         // Input Manager for Left Touch
-        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
-        {
-            print("LTouch_IndexTrigger pressed");
-        }
         if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick))
         {
             print("LTouch_Thumbstick pressed");
@@ -78,10 +108,6 @@ public class InputManager : MonoBehaviour {
 
 
         // Input Manager for Right Touch
-        if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
-        {
-            print("RTouch_IndexTrigger pressed");
-        }
         if (OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick))
         {
             print("RTouch_Thumbstick pressed");
